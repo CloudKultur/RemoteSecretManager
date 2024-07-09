@@ -1,7 +1,7 @@
 # Setup
 Download the proper version from the Packages section and copy them into your `/usr/local/bin` directory.
 
-After starting you will be prompted for your Gitlab token, which will be stored in a `.env` file (see `.env.template`) in your home path `~/.gcm/.env`:
+After starting you will be prompted for your Gitlab token, which will be stored in a `.env` file (see `.env.template`) in your home path `~/.rcm/.env`:
 ```
 TOKEN=<token>
 ```
@@ -52,10 +52,4 @@ Use `pyinstaller`, install via `pip3 install pyinstaller`.
 You can adjust the target architecture by setting it to `x86_64` or `arm64` for a mac.
 Then execute:
 
-`pyinstaller -F --target-arch x86_64 -n gcm main.py`
-
-## WIP: Building with docker
-Run locally:
-- `docker build -t gitlabcredentialsmanager:latest .`
-- `docker run -it --volume "./:/app"  --rm gitlabcredentialsmanager:latest`
-- `gcm` can be found in directory `./dist`
+`pyinstaller -F --target-arch x86_64 -n rcm main.py`

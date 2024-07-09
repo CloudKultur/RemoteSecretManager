@@ -102,9 +102,9 @@ class GitlabService:
             print(result.text)
 
 def load_environment():
-    dotent_path = Path.home() / Path(".gcm/.env")
+    dotent_path = Path.home() / Path(".rcm/.env")
     if not dotent_path.exists():
-        print("[!] .env file not found in ~/.gcm/.env, creating...")
+        print("[!] .env file not found in ~/.rcm/.env, creating...")
         token = input("Gitlab Token: ")
         dotent_path.parent.mkdir(exist_ok=True, parents=True)
         f = dotent_path.open("w", encoding="utf-8")

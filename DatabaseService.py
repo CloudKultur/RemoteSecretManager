@@ -15,7 +15,7 @@ class DatabaseService:
     def __init__(self, db):
         models = Models()
         self.db = db
-        self.database_name = Path.home() / Path(".gcm/" + db + ".db")
+        self.database_name = Path.home() / Path(".rcm/" + db + ".db")
         exists = os.path.isfile(self.database_name)
         self.connection = sqlite3.connect(self.database_name)
         self.connection.row_factory = sqlite3.Row
