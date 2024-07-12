@@ -26,7 +26,7 @@ def main():
     exclusive_options.add_argument("--select", help="selects project and pull keys", nargs="?")
     exclusive_options.add_argument("--projects", help="show known projects", action="store_true")
     exclusive_options.add_argument("--keys", help="update current projects keys", action="store_true")
-    exclusive_options.add_argument("--print", help="print the environment variables to console", action="store_true")
+    exclusive_options.add_argument("--show", help="print the environment variables to console", nargs="?", const=True)
     parser.add_argument("--env", help="Filter variables by environment", nargs="?", default=None)
     subparsers = parser.add_subparsers(help="", dest="subparser")
     use_parser = subparsers.add_parser("use", help="execute command with environment")
@@ -41,6 +41,9 @@ def main():
     key_delete_parser = subparsers.add_parser("unset", help="removes a key")
     key_delete_parser.add_argument("-e", "--env", help="environment for variable", nargs='?', default='*')
     key_delete_parser.add_argument("key", help="variable name for deletion", metavar="key")
+    key_show_parser = subparsers.add_parser("show", help="get a variable with full value")
+    key_show_parser.add_argument("key", help="get a variable with full value", metavar="key", nargs="?")
+    key_show_parser.add_argument("-e", "--env", help="environment for variable", nargs='?', default='*')
 
     args = parser.parse_args()
 
@@ -86,13 +89,15 @@ def main():
         update_keys()
         print("[*] Done!")
 
-    elif args.print:
+    elif args.subparser == "show":
         keys = list()
-        credentials = db.read(db.CREDENTIALS_TABLE)
+        if not args.key:
+            credentials = db.read(db.CREDENTIALS_TABLE)
+        else:
+            credentials = db.read_where(dict(key="key", value=args.key), db.CREDENTIALS_TABLE)
         for c in credentials:
             cred = credentials_from_database(c)
-            if args.env and cred.environment not in [args.env, "*"]:
-                print(cred.environment)
+            if args.env != "*" and cred.environment not in [args.env, "*"]:
                 continue
             cred.value = f.decrypt(str.encode(cred.value)).decode("utf-8")
             keys.append(cred)
