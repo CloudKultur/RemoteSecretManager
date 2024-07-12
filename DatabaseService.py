@@ -16,8 +16,9 @@ class DatabaseService:
         models = Models()
         self.db = db
         self.database_name = Path.home() / Path(".rcm/" + db + ".db")
+        self.database_name.parents[0].mkdir(parents=True, exist_ok=True)
         exists = os.path.isfile(self.database_name)
-        self.connection = sqlite3.connect(self.database_name)
+        self.connection = sqlite3.connect(str(self.database_name))
         self.connection.row_factory = sqlite3.Row
         if not exists:
             print("[*] Creating the project table...")
