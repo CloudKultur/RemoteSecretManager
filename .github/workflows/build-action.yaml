@@ -20,6 +20,7 @@ jobs:
           prerelease: false
           release_name: Release ${{ github.ref }}
           tag_name: ${{ github.ref }}
+          body: Latest release
         env:
           GITHUB_TOKEN: ${{ github.token }}
   build:
