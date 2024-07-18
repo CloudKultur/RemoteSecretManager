@@ -1,0 +1,52 @@
+name: Build RemoteCredentialsManager
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: create_release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          draft: false
+          prerelease: false
+          release_name: Latest release
+          tag_name: 0.1.0
+          body: Latest release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+  build:
+    needs: create_release
+    strategy:
+      matrix:
+        os: [ macos-14, macos-13 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+            python-version: '3.10' 
+            cache: 'pip'
+      - name: install requirements
+        run: pip install -r requirements.dev.txt
+      - name: create application file variables
+        id: output_values
+        run: |
+          echo ::set-output name=RCM_FILE_NAME::rcm-$(uname -m)
+          echo ::set-output name=RCM_FILE_PATH::dist/rcm-$(uname -m)
+      - name: run pyinstaller
+        run: pyinstaller -F -n rcm-$(uname -m) main.py
+      - name: upload ${{ matrix.os }} artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.output_values.outputs.RCM_FILE_PATH }}
+          asset_name: ${{ steps.output_values.outputs.RCM_FILE_NAME }}
+          asset_content_type: application/octet-stream
