@@ -1,5 +1,11 @@
 # Setup
-Download the proper version from the Packages section and copy them into your `/usr/local/bin` directory.
+Download the proper version from the Packages and copy them into your `/usr/local/bin` directory. Feel free to rename the application.
+
+## Mac Quarantine
+To disable the mac quarantine for this application, execute this in your command line where the application is:
+`xattr -dr com.apple.quarantine rcm`
+
+## Startup
 
 After starting you will be prompted for your Gitlab token, which will be stored in a `.env` file (see `.env.template`) in your home path `~/.rcm/.env`:
 ```
