@@ -17,7 +17,9 @@ In the directory where you want to use tok, ensure you created a `.env` file wit
 - use `--select 12345678` to select your project by id and fetch the keys
 - use `--rm` to delete your database
 - use `--keys` to update the keys for your selected project
-- use `--print` to write the keys with values to stdout
+- use `show` to write the keys with values to stdout
+    - specify variable name to return only by specific key 
+    - use `--env <environment>` before to filter environment variables based on the environment, for example `show --env Development MyVar`
 - use `--env` to filter by envronment
 - use `use -- <mycommand --foo bar>` to pass the variables to your command
     - use `--env <environment>` before to filter environment variables based on the environment, for example `use --env Development use -- <mycommand>`
