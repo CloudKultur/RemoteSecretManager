@@ -41,7 +41,7 @@ jobs:
         id: output_values
         run: |
           echo ::set-output name=RCM_FILE_NAME::rcm-$(uname -m)
-          echo ::set-output name=RCM_FILE_PATH::dist/$(echo $RCM_FILE_NAME)
+          echo ::set-output name=RCM_FILE_PATH::dist/rcm-$(uname -m)
       - name: run pyinstaller
         run: pyinstaller -F -n rcm-$(uname -m) main.py
       - name: upload ${{ matrix.os }} artifact
