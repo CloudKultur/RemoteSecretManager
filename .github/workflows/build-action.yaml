@@ -37,14 +37,18 @@ jobs:
             cache: 'pip'
       - name: install requirements
         run: pip install -r requirements.dev.txt
+      - name: create application file variables
+        run: |
+          echo "RCM_FILE_NAME=rcm-$(uname -m)" >> $GITHUB_ENV
+          echo "RCM_FILE_PATH=dist/$(echo $RCM_FILE_NAME)" >> $GITHUB_ENV
       - name: run pyinstaller
-        run: pyinstaller -F -n rcm main.py
+        run: pyinstaller -F -n rcm-$(uname -m) main.py
       - name: upload ${{ matrix.os }} artifact
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: ./dist/rcm
-          asset_name: rcm-${{ matrix.os }}
+          asset_path: $RCM_FILE_PATH
+          asset_name: $RCM_FILE_NAME
           asset_content_type: application/octet-stream
