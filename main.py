@@ -116,7 +116,7 @@ def main():
             env[cred.key] = cred.value
         try:
             with subprocess.Popen(args.use, env=env, bufsize=1, universal_newlines=True) as p:
-                for line in p.stdout:
+                for line in p.stdout if p.stdout else []:
                     print(line, end='')
             if p.returncode != 0:
                 raise subprocess.CalledProcessError(p.returncode, p.args)
