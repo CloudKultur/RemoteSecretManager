@@ -16,22 +16,22 @@ jobs:
           draft: false
           prerelease: false
           release_name: Latest release
-          tag_name: 0.1.0
-          body: Latest release
+          tag_name: 0.1.1
+          body: Fix nonetype error
         env:
           GITHUB_TOKEN: ${{ github.token }}
   build:
     needs: create_release
     strategy:
       matrix:
-        os: [ macos-14, macos-13 ]
+        os: [macos-14, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: '3.10' 
-            cache: 'pip'
+          python-version: "3.10"
+          cache: "pip"
       - name: install requirements
         run: pip install -r requirements.dev.txt
       - name: create application file variables
